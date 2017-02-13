@@ -113,7 +113,9 @@ public void disabledPeriodic() {
         
         mainDrive.mecanumDrive_Cartesian(rotDrv, fwdDrv, sldDrv, 0);
         
-        launchDrive.set(.5);
+        launchDrive.set(OI.controller.getRawAxis(3));
+
+        stopper.set(OI.controller.getRawAxis(2));
         
 	}
 
