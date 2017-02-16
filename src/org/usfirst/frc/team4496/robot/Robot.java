@@ -104,14 +104,27 @@ public void disabledPeriodic() {
         double lYVal = OI.controller.getRawAxis(1);
         double rXVal = OI.controller.getRawAxis(4);
         
-        //Slowing the drive by the triggers
+        /*//Slowing the drive by the triggers
         double trigger = 20;
         
         //Round and process the input 
         double rotDrv = ((double)((int)(lXVal  * 10)) ) / trigger;
         double fwdDrv = ((double)((int)(lYVal * 10)) ) / trigger;
         double sldDrv = ((double)((int)(rXVal  * 10)) ) / trigger;
-        
+        */
+        double rotDrv, fwdDrv, sldDrv;
+        if(Math.abs(lXVal) > 0.05)
+        	rotDrv = lXVal / 2;
+        else
+        	rotDrv = 0;
+        if(Math.abs(lYVal) > 0.05)
+        	fwdDrv = lYVal / 2;
+        else
+        	fwdDrv = 0;
+        if(Math.abs(rXVal) > 0.05)
+        	sldDrv = rXVal / 2;
+        else
+        	sldDrv = 0;
         mainDrive.mecanumDrive_Cartesian(rotDrv, fwdDrv, sldDrv, 0);
         
         if(OI.controller.getRawAxis(3) !=0){
@@ -122,9 +135,13 @@ public void disabledPeriodic() {
 
         if(OI.controller.getRawButton(1)){
         	stopper.set(1);
+        	SmartDashboard.putString("Servo Status", "Closed");
         }
-        else if (OI.controller.getRawButton(2))
-        	stopper.set(0.5);        
+        else if (OI.controller.getRawButton(2)){
+        	stopper.set(0.7);
+            SmartDashboard.putString("Servo Status", "Open");
+        }
+        
 	}
 
 	/**
