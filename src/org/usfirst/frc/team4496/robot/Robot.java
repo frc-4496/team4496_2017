@@ -36,6 +36,7 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		mainDrive = new RobotDrive(0, 1, 2, 3);
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 		launchDrive = new TalonSRX(4);
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
