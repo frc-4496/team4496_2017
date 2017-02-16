@@ -120,11 +120,11 @@ public void disabledPeriodic() {
         else
         	launchDrive.set(0);
 
-        if(OI.controller.getRawAxis(2) !=0){
+        if(OI.controller.getRawButton(1)){
         	stopper.set(1);
         }
-        else
-        	stopper.set(0);
+        else if (OI.controller.getRawButton(2))
+        	stopper.set(0.5);        
 	}
 
 	/**
