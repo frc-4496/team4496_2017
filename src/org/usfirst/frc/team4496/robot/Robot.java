@@ -38,6 +38,7 @@ public class Robot extends IterativeRobot {
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 		launchDrive = new TalonSRX(4);
+		stopper = new Servo(5);
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
@@ -113,10 +114,17 @@ public void disabledPeriodic() {
         
         mainDrive.mecanumDrive_Cartesian(rotDrv, fwdDrv, sldDrv, 0);
         
-        launchDrive.set(OI.controller.getRawAxis(3));
+        if(OI.controller.getRawAxis(3) !=0){
+        	launchDrive.set(1);
+        }
+        else
+        	launchDrive.set(0);
 
-        stopper.set(OI.controller.getRawAxis(2));
-        
+        if(OI.controller.getRawAxis(2) !=0){
+        	stopper.set(1);
+        }
+        else
+        	stopper.set(0);
 	}
 
 	/**

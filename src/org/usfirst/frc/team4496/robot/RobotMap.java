@@ -7,4 +7,5 @@ public class RobotMap {
 				frontRight = 2, 
 				rearRight = 3;
 	public static int launch = 4;
+	public static int stop = 5;
 }
