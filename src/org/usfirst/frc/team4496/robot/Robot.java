@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -40,8 +41,8 @@ public class Robot extends IterativeRobot {
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 		launchDrive = new TalonSRX(4);
 		stopper = new Servo(5);
-		annoy = new Victor(6);
-		lift = new TalonSRX(7);
+		lift = new TalonSRX(6);
+		annoy = new Victor(7);
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
@@ -116,15 +117,15 @@ public void disabledPeriodic() {
         double sldDrv = ((double)((int)(rXVal  * 10)) ) / trigger;
         */
         double rotDrv, fwdDrv, sldDrv;
-        if(Math.abs(lXVal) > 0.05)
+        if(Math.abs(lXVal) > 0.25)
         	rotDrv = lXVal / 2;
         else
         	rotDrv = 0;
-        if(Math.abs(lYVal) > 0.05)
+        if(Math.abs(lYVal) > 0.25)
         	fwdDrv = lYVal / 2;
         else
         	fwdDrv = 0;
-        if(Math.abs(rXVal) > 0.05)
+        if(Math.abs(rXVal) > 0.25)
         	sldDrv = rXVal / 2;
         else
         	sldDrv = 0;
@@ -144,11 +145,10 @@ public void disabledPeriodic() {
         	stopper.set(0.7);
             SmartDashboard.putString("Servo Status", "Open");
         }
-         if(OI.controller.getPOV() == 180){
-        	lift.set(-.5);
-        } else if(OI.controller.getPOV() == 0) {
-        	lift.set(.75);
-        } else {
+        
+        if(OI.controller.getRawButton(5))
+        	lift.set(.5);
+        else {
         	lift.set(0);
         }
        
@@ -157,6 +157,9 @@ public void disabledPeriodic() {
         }
         else if (OI.controller.getRawButton(4)){
         	annoy.set(-1);
+        }
+        else if (OI.controller.getRawButton(8)){
+        	annoy.set(0);
         }
 	}
 
@@ -167,4 +170,3 @@ public void disabledPeriodic() {
 	public void testPeriodic() {
 	}
 }
-
