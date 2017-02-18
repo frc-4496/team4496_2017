@@ -20,9 +20,10 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static RobotMap robotMap;
 	RobotDrive mainDrive;
-	TalonSRX launchDrive;
+	TalonSRX launchDrive, lift;
 	Command autoMode;
 	Servo stopper;
+	Victor annoy;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
@@ -39,6 +40,8 @@ public class Robot extends IterativeRobot {
 		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 		launchDrive = new TalonSRX(4);
 		stopper = new Servo(5);
+		annoy = new Victor(6);
+		lift = new TalonSRX(7);
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
