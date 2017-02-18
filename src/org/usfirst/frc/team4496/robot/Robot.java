@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4496.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Servo;
@@ -37,8 +38,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		mainDrive = new RobotDrive(0, 1, 2, 3);
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
 		launchDrive = new TalonSRX(4);
 		stopper = new Servo(5);
 		lift = new TalonSRX(6);
@@ -47,7 +48,6 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 	}
-	
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
 	 * You can use it to reset any subsystem information you want to clear when
@@ -95,6 +95,20 @@ public void disabledPeriodic() {
 			break;
 		}
 	}
+	/*
+	 * import edu.wpi.first.wpilibj.Joystick;
+	 * import edu.wpi.first.wpilibj.RobotDrive;
+	 * import edu.wpi.first.wpilibj.IterativeRobot;
+	 * 
+	 * public class MecanumDefaultCode extends IterativeRobot{
+	 * RobotDrive m_robotDrive = new RobotDrive(0, 1, 2, 3);
+	 * Joystick m_DriveStick = new Joystick(1);
+	 * 
+	 * public void teleopPeriodic(){
+	 * m_robotDrive.mecanumDrive_Cartesian(m_driveStick.getX(), m_driveStick.getY(), m_driveStick.getTwist(), 0);
+	 * }
+	 * }
+	 */
 
 	/**
 	 * This function is called periodically during operator control
@@ -116,11 +130,16 @@ public void disabledPeriodic() {
         double fwdDrv = ((double)((int)(lYVal * 10)) ) / trigger;
         double sldDrv = ((double)((int)(rXVal  * 10)) ) / trigger;
         */
-        double rotDrv, fwdDrv, sldDrv;
+        /*
+         * sideDrv = mecanum side-to-side
+         * fwdDrv = forward and backwards
+         * sldDrv = turning
+         */
+        double sideDrv, fwdDrv, sldDrv;
         if(Math.abs(lXVal) > 0.25)
-        	rotDrv = lXVal / 2;
+        	sideDrv = lXVal / 2;
         else
-        	rotDrv = 0;
+        	sideDrv = 0;
         if(Math.abs(lYVal) > 0.25)
         	fwdDrv = lYVal / 2;
         else
@@ -129,7 +148,7 @@ public void disabledPeriodic() {
         	sldDrv = rXVal / 2;
         else
         	sldDrv = 0;
-        mainDrive.mecanumDrive_Cartesian(rotDrv, fwdDrv, sldDrv, 0);
+        mainDrive.mecanumDrive_Cartesian(sldDrv, fwdDrv, sideDrv, 0);
         
         if(OI.controller.getRawAxis(3) !=0){
         	launchDrive.set(1);
@@ -146,18 +165,21 @@ public void disabledPeriodic() {
             SmartDashboard.putString("Servo Status", "Open");
         }
         
-        if(OI.controller.getRawButton(5))
-        	lift.set(.5);
+        if(OI.controller.getRawAxis(2) !=0)
+        	annoy.set(.5);
         else {
-        	lift.set(0);
+        	annoy.set(0);
         }
        
-        if(OI.controller.getRawAxis(2) !=0){
-        	annoy.set(1);
+        if(OI.controller.getRawButton(3)){
+        	lift.set(1);
         }
-        else
-        	annoy.set(0);
-        
+        else if (OI.controller.getRawButton(4)){
+        	lift.set(-1);
+        }
+        else if (OI.controller.getRawButton(8)){
+        	lift.set(0);
+        }
 	}
 
 	/**
