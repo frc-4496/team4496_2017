@@ -152,15 +152,12 @@ public void disabledPeriodic() {
         	lift.set(0);
         }
        
-        if(OI.controller.getRawButton(3)){
+        if(OI.controller.getRawAxis(2) !=0){
         	annoy.set(1);
         }
-        else if (OI.controller.getRawButton(4)){
-        	annoy.set(-1);
-        }
-        else if (OI.controller.getRawButton(8)){
+        else
         	annoy.set(0);
-        }
+        
 	}
 
 	/**
