@@ -141,7 +141,20 @@ public void disabledPeriodic() {
         	stopper.set(0.7);
             SmartDashboard.putString("Servo Status", "Open");
         }
-        
+         if(OI.controller.getPOV() == 180){
+        	lift.set(-.5);
+        } else if(OI.controller.getPOV() == 0) {
+        	lift.set(.75);
+        } else {
+        	lift.set(0);
+        }
+       
+        if(OI.controller.getRawButton(3)){
+        	annoy.set(1);
+        }
+        else if (OI.controller.getRawButton(4)){
+        	annoy.set(-1);
+        }
 	}
 
 	/**
