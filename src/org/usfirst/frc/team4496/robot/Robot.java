@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.TalonSRX;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -26,6 +27,7 @@ public class Robot extends IterativeRobot {
 	Command autoMode;
 	Servo stopper;
 	Victor annoy;
+	Timer tim;
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
 	String autoSelected;
@@ -38,8 +40,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		mainDrive = new RobotDrive(0, 1, 2, 3);
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
-		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+		mainDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 		launchDrive = new TalonSRX(4);
 		stopper = new Servo(5);
 		lift = new TalonSRX(6);
@@ -75,6 +77,8 @@ public void disabledPeriodic() {
 	@Override
 	public void autonomousInit() {
 		autoSelected = chooser.getSelected();
+		tim = new Timer();
+		tim.start();
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
@@ -92,6 +96,12 @@ public void disabledPeriodic() {
 		case defaultAuto:
 		default:
 			// Put default auto code here
+			
+			if(tim.get() <= 5.) {
+				mainDrive.mecanumDrive_Cartesian(0, .5, 0, 0);	
+			}
+			else
+				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
 			break;
 		}
 	}
@@ -136,19 +146,19 @@ public void disabledPeriodic() {
          * sldDrv = turning
          */
         double sideDrv, fwdDrv, sldDrv;
-        if(Math.abs(lXVal) > 0.25)
+        if(Math.abs(lXVal) > 0.2)
         	sideDrv = lXVal / 2;
         else
         	sideDrv = 0;
-        if(Math.abs(lYVal) > 0.25)
+        if(Math.abs(lYVal) > 0.2)
         	fwdDrv = lYVal / 2;
         else
         	fwdDrv = 0;
-        if(Math.abs(rXVal) > 0.25)
+        if(Math.abs(rXVal) > 0.2)
         	sldDrv = rXVal / 2;
         else
         	sldDrv = 0;
-        mainDrive.mecanumDrive_Cartesian(sldDrv, fwdDrv, sideDrv, 0);
+        mainDrive.mecanumDrive_Cartesian(sideDrv, fwdDrv, sldDrv, 0);
         
         if(OI.controller.getRawAxis(3) !=0){
         	launchDrive.set(1);
@@ -156,11 +166,11 @@ public void disabledPeriodic() {
         else
         	launchDrive.set(0);
 
-        if(OI.controller.getRawButton(1)){
+        if(OI.controller.getRawButton(2)){
         	stopper.set(1);
         	SmartDashboard.putString("Servo Status", "Closed");
         }
-        else if (OI.controller.getRawButton(2)){
+        else if (OI.controller.getRawButton(1)){
         	stopper.set(0.7);
             SmartDashboard.putString("Servo Status", "Open");
         }
@@ -174,10 +184,10 @@ public void disabledPeriodic() {
         if(OI.controller.getRawButton(3)){
         	lift.set(1);
         }
-        else if (OI.controller.getRawButton(4)){
+        /*else if (OI.controller.getRawButton(4)){
         	lift.set(-1);
-        }
-        else if (OI.controller.getRawButton(8)){
+        }*/
+        else if (OI.controller.getRawButton(4)){
         	lift.set(0);
         }
 	}
