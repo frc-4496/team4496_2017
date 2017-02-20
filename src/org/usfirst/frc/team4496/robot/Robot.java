@@ -97,8 +97,8 @@ public void disabledPeriodic() {
 		default:
 			// Put default auto code here
 			
-			if(tim.get() <= 5.) {
-				mainDrive.mecanumDrive_Cartesian(0, .5, 0, 0);	
+			if(tim.get() <= 2.5) {
+				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);	
 			}
 			else
 				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
@@ -181,7 +181,7 @@ public void disabledPeriodic() {
         	annoy.set(0);
         }
        
-        if(OI.controller.getRawButton(3)){
+        if(OI.controller.getRawButton(3) && OI.controller.getRawButton(6)){
         	lift.set(1);
         }
         /*else if (OI.controller.getRawButton(4)){
