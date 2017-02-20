@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4496.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Servo;
@@ -49,6 +50,7 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		CameraServer.getInstance().startAutomaticCapture();
 	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -123,6 +125,7 @@ public void disabledPeriodic() {
 	/**
 	 * This function is called periodically during operator control
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void teleopPeriodic() {
 //Main drive setup
@@ -151,7 +154,7 @@ public void disabledPeriodic() {
         else
         	sideDrv = 0;
         if(Math.abs(lYVal) > 0.2)
-        	fwdDrv = lYVal / 2;
+        	fwdDrv = (lYVal * 3) / 4;
         else
         	fwdDrv = 0;
         if(Math.abs(rXVal) > 0.2)
