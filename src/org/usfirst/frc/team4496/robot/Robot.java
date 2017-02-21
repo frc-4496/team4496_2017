@@ -132,8 +132,9 @@ public void disabledPeriodic() {
         
         //Getting and rounding the input values
         double lXVal = OI.controller.getRawAxis(0);
-        double lYVal = OI.controller.getRawAxis(1);
+        double lYVal = OI.controller.getRawAxis(1);        
         double rXVal = OI.controller.getRawAxis(4);
+        double rYVal = OI.controller.getRawAxis(5);
         
         /*//Slowing the drive by the triggers
         double trigger = 20;
@@ -153,8 +154,8 @@ public void disabledPeriodic() {
         	sideDrv = lXVal / 2;
         else
         	sideDrv = 0;
-        if(Math.abs(lYVal) > 0.2)
-        	fwdDrv = (lYVal * 3) / 4;
+        if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2)
+        	fwdDrv = lYVal;
         else
         	fwdDrv = 0;
         if(Math.abs(rXVal) > 0.2)
