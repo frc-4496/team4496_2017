@@ -154,8 +154,12 @@ public void disabledPeriodic() {
         	sideDrv = lXVal / 2;
         else
         	sideDrv = 0;
-        if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2)
-        	fwdDrv = lYVal;
+        if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2){
+        	if(Math.abs(lYVal) > 0.2)
+        		fwdDrv = lYVal;
+        	else
+        		fwdDrv = rYVal;
+        }
         else
         	fwdDrv = 0;
         if(Math.abs(rXVal) > 0.2)
