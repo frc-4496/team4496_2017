@@ -154,8 +154,13 @@ public void disabledPeriodic() {
         	sideDrv = lXVal / 2;
         else
         	sideDrv = 0;
-        if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2)
-        	fwdDrv = lYVal;
+        if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2){
+        	if(Math.abs(lYVal) > 0.2){
+        		fwdDrv = lYVal;
+        	}
+        	else
+        		fwdDrv = rYVal;
+        }
         else
         	fwdDrv = 0;
         if(Math.abs(rXVal) > 0.2)
@@ -192,7 +197,10 @@ public void disabledPeriodic() {
         	lift.set(-1);
         }*/
         else if (OI.controller.getRawButton(4)){
-        	lift.set(0);
+        	lift.set(0);        	
+        }
+        else if (OI.controller.getRawButton(4) && OI.controller.getRawButton(6)){
+        	lift.set(0.5);
         }
 	}
 
