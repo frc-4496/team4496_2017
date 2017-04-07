@@ -99,7 +99,7 @@ public void disabledPeriodic() {
 		default:
 			// Put default auto code here
 			
-			if(tim.get() <= 2.5) {
+			if(tim.get() <= 3.5) {
 				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);	
 			}
 			else
