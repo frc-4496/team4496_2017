@@ -94,6 +94,19 @@ public void disabledPeriodic() {
 		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
+
+			if(tim.get() <= 3.25) {
+				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);	
+			}
+			else if(tim.get() <= 4.5){
+				mainDrive.mecanumDrive_Cartesian(0, 0, -.25, 0);				
+			}
+			else if(tim.get() <= 6.0){
+				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);
+			}
+			else
+				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
+			
 			break;
 		case defaultAuto:
 		default:
@@ -102,6 +115,12 @@ public void disabledPeriodic() {
 			if(tim.get() <= 3.5) {
 				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);	
 			}
+			/*else if(tim.get() <= 5.5){
+				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
+			}
+			else if (tim.get() <= 6.0){
+				mainDrive.mecanumDrive_Cartesian(0, 0, -.25, 0);
+			}*/
 			else
 				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
 			break;
