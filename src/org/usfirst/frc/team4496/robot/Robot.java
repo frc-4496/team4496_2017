@@ -178,7 +178,6 @@ public void disabledPeriodic() {
         	sideDrv = lXVal / 2;
         else
         	sideDrv = 0;
-<<<<<<< HEAD
         
         //this commented portion allows for double-joystick forward drive
         
@@ -193,14 +192,6 @@ public void disabledPeriodic() {
         if(Math.abs(lYVal) > 0.2){        	
         	fwdDrv = lYVal / 2;
         }
-=======
-        if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2){
-        	if(Math.abs(lYVal) > 0.2)
-        		fwdDrv = lYVal;
-        	else
-        		fwdDrv = rYVal;
-        }
->>>>>>> origin/master
         else
         	fwdDrv = 0;
         if(Math.abs(turn) > 0.2)
