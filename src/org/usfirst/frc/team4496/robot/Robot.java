@@ -20,6 +20,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+
+/*
+ * Part of the original robot code has been commented out because we were contemplating attending the 4th quarter assembly.
+ * The code that you see not in comments has been translated from David Boehmer's Xbox controller to the black joystick that the program owns. 
+ */
 public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static RobotMap robotMap;
@@ -80,7 +85,7 @@ public void disabledPeriodic() {
 	public void autonomousInit() {
 		autoSelected = chooser.getSelected();
 		tim = new Timer();
-		tim.start();
+		tim.start();				//starts a timer for autonomous movement
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
@@ -94,16 +99,21 @@ public void disabledPeriodic() {
 		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
-
+			
+			//Moves forward for 3.25 seconds
 			if(tim.get() <= 3.25) {
-				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);	
+				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0); //mainDrive.mecanumDrive_Cartesian(x, y, rotation, gyroAngle); moves robot with mecanum wheels	
 			}
+			
+			//Turns counterclockwise
 			else if(tim.get() <= 4.5){
 				mainDrive.mecanumDrive_Cartesian(0, 0, -.25, 0);				
 			}
 			else if(tim.get() <= 6.0){
 				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);
 			}
+			
+			//Stops moving
 			else
 				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
 			
@@ -111,21 +121,19 @@ public void disabledPeriodic() {
 		case defaultAuto:
 		default:
 			// Put default auto code here
-			
+
+			//Moves forward for 3.5 seconds
 			if(tim.get() <= 3.5) {
 				mainDrive.mecanumDrive_Cartesian(0, -.25, 0, 0);	
 			}
-			/*else if(tim.get() <= 5.5){
-				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
-			}
-			else if (tim.get() <= 6.0){
-				mainDrive.mecanumDrive_Cartesian(0, 0, -.25, 0);
-			}*/
 			else
 				mainDrive.mecanumDrive_Cartesian(0, 0, 0, 0);
 			break;
 		}
 	}
+	
+	//I have no idea what this does
+	
 	/*
 	 * import edu.wpi.first.wpilibj.Joystick;
 	 * import edu.wpi.first.wpilibj.RobotDrive;
@@ -146,23 +154,20 @@ public void disabledPeriodic() {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
+	
+	//Most of the comments with values in this section have been commented out because of the assembly
+	
 	public void teleopPeriodic() {
-//Main drive setup
-        
+
+		//Main drive setup
+    		
         //Getting and rounding the input values
         double lXVal = OI.controller.getRawAxis(0);
         double lYVal = OI.controller.getRawAxis(1);        
-        double rXVal = OI.controller.getRawAxis(4);
-        double rYVal = OI.controller.getRawAxis(5);
+        //double rXVal = OI.controller.getRawAxis(4);
+        //double rYVal = OI.controller.getRawAxis(5);
+        double turn = OI.controller.getRawAxis(2);
         
-        /*//Slowing the drive by the triggers
-        double trigger = 20;
-        
-        //Round and process the input 
-        double rotDrv = ((double)((int)(lXVal  * 10)) ) / trigger;
-        double fwdDrv = ((double)((int)(lYVal * 10)) ) / trigger;
-        double sldDrv = ((double)((int)(rXVal  * 10)) ) / trigger;
-        */
         /*
          * sideDrv = mecanum side-to-side
          * fwdDrv = forward and backwards
@@ -173,54 +178,87 @@ public void disabledPeriodic() {
         	sideDrv = lXVal / 2;
         else
         	sideDrv = 0;
-        if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2){
+        
+        //this commented portion allows for double-joystick forward drive
+        
+        /*if(Math.abs(lYVal) > 0.2 || Math.abs(rYVal) > 0.2){
         	if(Math.abs(lYVal) > 0.2){
         		fwdDrv = lYVal;
         	}
         	else
         		fwdDrv = rYVal;
         }
+        */
+        if(Math.abs(lYVal) > 0.2){        	
+        	fwdDrv = lYVal / 2;
+        }
         else
         	fwdDrv = 0;
-        if(Math.abs(rXVal) > 0.2)
-        	sldDrv = rXVal / 2;
+        if(Math.abs(turn) > 0.2)
+        	sldDrv = turn / 2;
         else
         	sldDrv = 0;
         mainDrive.mecanumDrive_Cartesian(sideDrv, fwdDrv, sldDrv, 0);
         
-        if(OI.controller.getRawAxis(3) !=0){
+        
+        //This commented portion was initially set to activate the ball launcher
+        
+        /*if(OI.controller.getRawAxis(3) !=0){
         	launchDrive.set(1);
         }
         else
         	launchDrive.set(0);
-
-        if(OI.controller.getRawButton(2)){
+         */
+        
+        if(OI.controller.getRawButton(1)){
+        	launchDrive.set(1);
+        }
+        
+        if(OI.controller.getRawButton(2))
+        	launchDrive.set(0);
+        
+        /*
+         * Servo activation
+         * SmartDashboard is the viewing window that opens with the driver station
+         */
+        if(OI.controller.getRawButton(5)){ //change to 2 when done with assembly
         	stopper.set(1);
         	SmartDashboard.putString("Servo Status", "Closed");
         }
-        else if (OI.controller.getRawButton(1)){
+        else if (OI.controller.getRawButton(4)){ //change to 1 when done with assembly
         	stopper.set(0.7);
             SmartDashboard.putString("Servo Status", "Open");
         }
         
-        if(OI.controller.getRawAxis(2) !=0)
+        //The following comment is the initial code for the agitator
+        
+        /*if(OI.controller.getRawAxis(2) !=0)
         	annoy.set(.5);
         else {
         	annoy.set(0);
         }
-       
-        if(OI.controller.getRawButton(3) && OI.controller.getRawButton(6)){
+       */
+        if(OI.controller.getRawButton(7)){
+        	annoy.set(0.5);
+        }
+        if(OI.controller.getRawButton(10)){
+        	annoy.set(0);
+        }
+        
+        //The following comment is the code for climbing the rope
+        
+        /* if(OI.controller.getRawButton(8) && OI.controller.getRawButton(9)){//change to 3 and 6, respectively, when done with assembly
         	lift.set(1);
         }
         /*else if (OI.controller.getRawButton(4)){
         	lift.set(-1);
-        }*/
-        else if (OI.controller.getRawButton(4)){
+        }				//not a part of original code
+        else if (OI.controller.getRawButton(7)){ //change to 4 when done with assembly
         	lift.set(0);        	
         }
-        else if (OI.controller.getRawButton(4) && OI.controller.getRawButton(6)){
+        else if (OI.controller.getRawButton(6) && OI.controller.getRawButton(7)){ //change to 4 and 6, respectively, when done with assembly
         	lift.set(0.5);
-        }
+        }*/
 	}
 
 	/**
